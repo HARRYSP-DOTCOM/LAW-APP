@@ -4,9 +4,16 @@ import cors from "cors";
 
 dotenv.config();
 
+const rateLimit = require("express-rate-limit");
 const app = express();
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100
+});
+
 app.use(cors());
+app.use(limiter);
 app.use(express.json());
 app.use(express.static("public"));
 
@@ -20,8 +27,8 @@ app.get("/", (req, res) => {
 app.post("/api/chat", async (req, res) => {
   const { message } = req.body;
 
-  if (!message) {
-    return res.status(400).json({ reply: "Please provide a message." });
+  if (!message || typeof message !== "string" || message.length > 500) {
+    return res.status(400).json({ error: "Invalid input" });
   }
 
   try {
