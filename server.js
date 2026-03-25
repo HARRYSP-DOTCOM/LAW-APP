@@ -32,9 +32,9 @@ app.post("/api/chat", async (req, res) => {
       return res.status(500).json({ reply: "Server configuration error." });
     }
 
-    // ✅ FIX: Added "-latest" to the model name in the URL
+    // ✅ FIX: Pointing directly to the latest stable Gemini 2.5 Flash model
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: {
